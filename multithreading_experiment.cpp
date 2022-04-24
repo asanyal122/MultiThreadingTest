@@ -44,19 +44,20 @@ int main(void){
 	
 	
 	for(auto it:group){
+		vector<thread> v;
 		for(auto id:it.second){
 			if(id%3==1){
-				thread t(critical1,id);
-				t.join();
+				v.push_back(move(thread(critical1,id)));
 			}
 			else if(id%3==2){
-				thread t(critical2,id);
-				t.join();
+				v.push_back(move(thread(critical2,id)));
 			}
 			else{
-				thread t(critical3,id);
-				t.join();
+				v.push_back(move(thread(critical3,id)));
 			}
+		}
+		for(auto& t:v){
+			t.join();
 		}
 	}
 	
